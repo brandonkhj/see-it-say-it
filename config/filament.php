@@ -140,7 +140,7 @@ return [
         'namespace' => 'App\\Filament\\Widgets',
         'path' => app_path('Filament/Widgets'),
         'register' => [
-            Map::class,
+            // Map::class,
             Widgets\AccountWidget::class,
         ],
     ],
