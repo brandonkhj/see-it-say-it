@@ -6,6 +6,8 @@ use App\Filament\Resources\ReportResource\Pages;
 use App\Models\Report;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Filament\Forms;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput\Mask;
@@ -66,8 +68,36 @@ class ReportResource extends Resource
                                 ->required()
                                 ->maxLength(255),
 
-                            Map::make('location')
-                            ->geolocate()
+                                Grid::make(2)
+                                ->schema([
+                                    Forms\Components\TextInput::make('latitude')
+                                        ->reactive()
+                                        ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                            $set('map', [
+                                                'lat' => floatval($state),
+                                                'lng' => floatval($get('longitude')),
+                                            ]);
+                                        })
+                                        ->lazy(),
+                                    Forms\Components\TextInput::make('longitude')
+                                        ->reactive()
+                                        ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                            $set('map', [
+                                                'lat' => floatval($get('latitude')),
+                                                'lng' => floatval($state),
+                                            ]);
+                                        })
+                                        ->lazy(),
+                                    ]),
+
+                            Map::make('map')
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                    $set('latitude', $state['lat']);
+                                    $set('longitude', $state['lng']);
+                                })
+                                ->geolocate()
+                                ->geolocateLabel('Get Location')
                                 ->autocomplete('location'),
 
                             Forms\Components\Checkbox::make('isAnonymous')
