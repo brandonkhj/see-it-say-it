@@ -4,16 +4,16 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReportResource\Pages;
 use App\Models\Report;
+use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Filament\Forms;
 use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput\Mask;
 use Filament\Forms\Components\Wizard;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Humaidem\FilamentMapPicker\Fields\OSMMap;
 
 class ReportResource extends Resource
 {
@@ -62,13 +62,13 @@ class ReportResource extends Resource
                             SpatieMediaLibraryFileUpload::make('images')
                                 ->multiple(),
 
-                            OSMMap::make('location')
-                                ->afterStateHydrated(function ($state, callable $set) {
-                                        if ($state instanceof \Point) {
-                                            /** @var Point $state */
-                                            $set('location', ['lat' => $state->getLat(), 'lng' => $state->getLng()]);
-                                        }
-                                    }),
+                            Forms\Components\TextInput::make('location')
+                                ->required()
+                                ->maxLength(255),
+
+                            Map::make('location')
+                            ->geolocate()
+                                ->autocomplete('location'),
 
                             Forms\Components\Checkbox::make('isAnonymous')
                                 ->label('Choose to submit as anonymous'),
