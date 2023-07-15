@@ -7,7 +7,6 @@ use App\Models\Report;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Filament\Forms;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput\Mask;
@@ -62,16 +61,21 @@ class ReportResource extends Resource
                                 ->maxLength(255),
 
                             SpatieMediaLibraryFileUpload::make('images')
+                                ->collection(Report::MEDIA_COLLECTION_IMAGES)
+                                ->image()
+                                ->enableReordering()
+                                ->maxSize(10000)
                                 ->multiple(),
 
                             Forms\Components\TextInput::make('location')
                                 ->required()
                                 ->maxLength(255),
 
-                                Grid::make(2)
+                            Grid::make(2)
                                 ->schema([
                                     Forms\Components\TextInput::make('latitude')
                                         ->reactive()
+                                        ->required()
                                         ->afterStateUpdated(function ($state, callable $get, callable $set) {
                                             $set('map', [
                                                 'lat' => floatval($state),
@@ -81,6 +85,7 @@ class ReportResource extends Resource
                                         ->lazy(),
                                     Forms\Components\TextInput::make('longitude')
                                         ->reactive()
+                                        ->required()
                                         ->afterStateUpdated(function ($state, callable $get, callable $set) {
                                             $set('map', [
                                                 'lat' => floatval($get('latitude')),
@@ -88,17 +93,17 @@ class ReportResource extends Resource
                                             ]);
                                         })
                                         ->lazy(),
-                                    ]),
+                                ]),
 
-                            Map::make('map')
-                                ->reactive()
-                                ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                    $set('latitude', $state['lat']);
-                                    $set('longitude', $state['lng']);
-                                })
-                                ->geolocate()
-                                ->geolocateLabel('Get Location')
-                                ->autocomplete('location'),
+                            // Map::make('map')
+                            //     ->reactive()
+                            //     ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                            //         $set('latitude', $state['lat']);
+                            //         $set('longitude', $state['lng']);
+                            //     })
+                            //     ->geolocate()
+                            //     ->geolocateLabel('Get Location')
+                            //     ->autocomplete('location'),
 
                             Forms\Components\Checkbox::make('isAnonymous')
                                 ->label('Choose to submit as anonymous'),
@@ -111,9 +116,6 @@ class ReportResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id'),
-                Tables\Columns\IconColumn::make('isAnonymous')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('criticality'),
                 Tables\Columns\TextColumn::make('category'),
                 Tables\Columns\TextColumn::make('title'),
@@ -126,9 +128,7 @@ class ReportResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array

@@ -34,10 +34,10 @@ class Map extends MapWidget
         return [
             Actions\ZoomAction::make(),
             Actions\CenterMapAction::make()
-            ->fitBounds([
-                [6.722227, 99.821662],
-                [0.48780536604028557, 114.61134466491899],
-            ]),
+                ->fitBounds([
+                    [6.722227, 99.821662],
+                    [0.48780536604028557, 114.61134466491899],
+                ]),
 
         ];
     }
