@@ -53,7 +53,6 @@ class ReportResource extends Resource
                                 ])
                                 ->required(),
                             Forms\Components\TextInput::make('contact')
-                                ->mask(fn (Mask $mask) => $mask->pattern('+{601}0-000 00000'))
                                 ->required(),
                             Forms\Components\TextInput::make('title')
                                 ->required()
