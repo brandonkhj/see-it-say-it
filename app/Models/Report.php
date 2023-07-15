@@ -11,13 +11,18 @@ class Report extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    const MEDIA_COLLECTION_IMAGES = 'images';
+    const MEDIA_COLLECTION_ATTACHMENT = 'attachment';
 
     protected $guarded = [];
 
     protected $appends = [
-        'map',
+        'map', 'report_id'
     ];
+
+    public function getReportIdAttribute(): string
+    {
+        return str_pad(0, 4, '0', STR_PAD_LEFT) . '-' . str_pad($this->id, 4, '0', STR_PAD_LEFT) ;
+    }
 
     public function getMapAttribute(): array
     {
