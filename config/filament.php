@@ -1,6 +1,5 @@
 <?php
 
-use App\Filament\Widgets\Map;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Http\Middleware\MirrorConfigToSubpackages;
@@ -105,9 +104,7 @@ return [
     'pages' => [
         'namespace' => 'App\\Filament\\Pages',
         'path' => app_path('Filament/Pages'),
-        'register' => [
-            Pages\Dashboard::class,
-        ],
+        'register' => [],
     ],
 
     /*
@@ -139,10 +136,7 @@ return [
     'widgets' => [
         'namespace' => 'App\\Filament\\Widgets',
         'path' => app_path('Filament/Widgets'),
-        'register' => [
-            // Map::class,
-            Widgets\AccountWidget::class,
-        ],
+        'register' => [],
     ],
 
     /*
