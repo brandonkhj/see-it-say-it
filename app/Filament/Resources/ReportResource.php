@@ -15,6 +15,8 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
+use Illuminate\Support\Str;
 
 class ReportResource extends Resource
 {
@@ -44,10 +46,10 @@ class ReportResource extends Resource
                         ->schema([
                             Forms\Components\Select::make('category')
                                 ->options([
-                                    'near-miss' => 'Near Miss',
-                                    'property-damage' => 'Property Damage',
-                                    'unsafe-act' => 'Unsafe Act',
-                                    'unsafe-condition' => 'Unsafe COndition',
+                                    'near_miss' => 'Near Miss',
+                                    'property_damage' => 'Property Damage',
+                                    'unsafe_act' => 'Unsafe Act',
+                                    'unsafe_condition' => 'Unsafe COndition',
                                 ])
                                 ->required(),
                             Forms\Components\TextInput::make('contact')
@@ -95,15 +97,15 @@ class ReportResource extends Resource
                                         ->lazy(),
                                 ]),
 
-                            // Map::make('map')
-                            //     ->reactive()
-                            //     ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                            //         $set('latitude', $state['lat']);
-                            //         $set('longitude', $state['lng']);
-                            //     })
-                            //     ->geolocate()
-                            //     ->geolocateLabel('Get Location')
-                            //     ->autocomplete('location'),
+                            Map::make('map')
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                    $set('latitude', $state['lat']);
+                                    $set('longitude', $state['lng']);
+                                })
+                                ->geolocate()
+                                ->geolocateLabel('Get Location')
+                                ->autocomplete('location'),
 
                             Forms\Components\Checkbox::make('isAnonymous')
                                 ->label('Choose to submit as anonymous'),
@@ -116,10 +118,29 @@ class ReportResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('criticality'),
-                Tables\Columns\TextColumn::make('category'),
-                Tables\Columns\TextColumn::make('title'),
+                BadgeColumn::make('criticality')
+                    ->colors([
+                        'danger' => 'High',
+                        'warning' => 'Medium',
+                        'success' => 'Low',
+                    ])
+                    ->getStateUsing(function (Report $record) {
+                        return Str::title($record->criticality);
+                    })
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('category')
+                    ->getStateUsing(function (Report $record) {
+                        return Str::title(str_replace('_', ' ', $record->category));
+                    })
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('location')
+                    ->sortable()
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->sortable()
                     ->dateTime(),
             ])
             ->filters([
