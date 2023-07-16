@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReportResource\Pages;
+use App\Forms\Components\RadioImage;
 use App\Forms\Components\Voice;
 use App\Models\Report;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
@@ -15,6 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Support\Str;
+use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 
 class ReportResource extends Resource
 {
@@ -30,7 +32,7 @@ class ReportResource extends Resource
                     ->default(auth()->id()),
 
                 Group::make([
-                    Forms\Components\Select::make('category')
+                    RadioImage::make('category')
                         ->options([
                             'near_miss' => 'Near Miss',
                             'property_damage' => 'Property Damage',
@@ -38,6 +40,15 @@ class ReportResource extends Resource
                             'unsafe_condition' => 'Unsafe Condition',
                         ])
                         ->required(),
+
+                    // Forms\Components\Select::make('category')
+                    //     ->options([
+                    //         'near_miss' => 'Near Miss',
+                    //         'property_damage' => 'Property Damage',
+                    //         'unsafe_act' => 'Unsafe Act',
+                    //         'unsafe_condition' => 'Unsafe Condition',
+                    //     ])
+                    //     ->required(),
                     Forms\Components\TextInput::make('title')
                         ->datalist([
                             'A close call that could have resulted in a serious accident',
