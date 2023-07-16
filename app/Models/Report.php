@@ -12,6 +12,7 @@ class Report extends Model implements HasMedia
     use HasFactory, InteractsWithMedia;
 
     const MEDIA_COLLECTION_ATTACHMENT = 'attachment';
+    const MEDIA_COLLECTION_VOICE = 'voice';
 
     protected $guarded = [];
 

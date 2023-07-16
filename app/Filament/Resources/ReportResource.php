@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReportResource\Pages;
+use App\Forms\Components\Voice;
 use App\Models\Report;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Filament\Forms;
@@ -63,6 +64,9 @@ class ReportResource extends Resource
                         ->maxLength(255),
                     Forms\Components\Textarea::make('description')
                         ->maxLength(255),
+
+                    Voice::make('voice')
+                        ->dehydrated(false),
 
                     SpatieMediaLibraryFileUpload::make('attachments')
                         ->collection(Report::MEDIA_COLLECTION_ATTACHMENT)
