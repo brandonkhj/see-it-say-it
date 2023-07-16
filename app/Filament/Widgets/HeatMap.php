@@ -41,19 +41,6 @@ class HeatMap extends MapWidget
                     'lat' => $location->latitude ? round(floatval($location->latitude), static::$precision) : 0,
                     'lng' => $location->longitude ? round(floatval($location->longitude), static::$precision) : 0,
                 ],
-
-                'label'     => $location->latitude . ',' . $location->longitude,
-
-				/**
-				 * Optionally you can provide custom icons for the map markers,
-				 * either as scalable SVG's, or PNG, which doesn't support scaling.
-				 * If you don't provide icons, the map will use the standard Google marker pin.
-				 */
-				'icon' => [
-					'url' => url('images/dealership.svg'),
-					'type' => 'svg',
-					'scale' => [35,35],
-				],
             ];
         }
 

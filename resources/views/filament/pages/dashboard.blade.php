@@ -1,4 +1,4 @@
-<u>FOR EMERGENCY, CALL 1300-88-2525</u>
+<u>FOR EMERGENCY, CALL <a href="tel:1300882525">1300-88-2525</a></u>
 <x-filament::page>
 
 </x-filament::page>

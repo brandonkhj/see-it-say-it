@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Widgets\HeatMap;
+use App\Filament\Widgets\HeatMapTable;
 use Filament\Pages\Dashboard as BasePage;
 
 class Dashboard extends BasePage
@@ -28,6 +29,7 @@ class Dashboard extends BasePage
     {
         return [
             HeatMap::class
+            // HeatMapTable::class
         ];
     }
 }
